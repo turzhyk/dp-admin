@@ -18,15 +18,33 @@ export default function Admin() {
   const myId: string = "23";
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
-  // useEffect(() => {
-  //   const loadData = async () => {
-  //     const data = await fetchServiceOrders();
-  //     setData(data);
-  //   };
+  const [activeOrder, setActiveOrder] = useState<IOrder|null>(null);
 
-  //   loadData();
-  // }, []);
-
+  const getOrderList = () => {
+    if (loading)
+      return (
+        <div className="w-60 h-40 border-2 text-center">
+          System się urochamia...
+        </div>
+      );
+    else
+      return (
+        <>
+          <div className="order-list">
+            <OrderListItem />
+            <OrderListItem />
+            <OrderListItem />
+            <OrderListItem />
+          </div>
+          <div className="order-lifst">
+            <OrderListItem />
+            <OrderListItem />
+            <OrderListItem />
+            <OrderListItem />
+          </div>
+        </>
+      );
+  };
   useEffect(() => {
     axios
       .get("http://localhost:5030/api/orders")
@@ -37,18 +55,13 @@ export default function Admin() {
       })
       .catch((err) => console.error(err));
   }, []);
-  if (loading)
-    return (
-      <div className="w-60 h-40 border-2 text-center">
-        System się urochamia...
-      </div>
-    );
+
   return (
     <div className="main-wrapper">
       <div className="left">
         <div>
           <div>
-            <h1>Zamówienie {orders[0].id}</h1>
+            <h1>Zamówienie {activeOrder?.id}</h1>
           </div>
           <div className="flex w-full justify-between gap-10 mt-8 mb-8">
             <div className="w-full">
@@ -70,14 +83,16 @@ export default function Admin() {
               </div>
               <div className="param-wrapper-1">
                 <span className="param-name-1">Opłąta</span>
-                <span className="param-1 payment-text-successful">
+                {activeOrder!=null && (  <span className="param-1 payment-text-successful">
                   BLIK powiodła się
-                </span>
+                </span>) || "-"}
+              
               </div>
             </div>
           </div>
-          {<ParamTab type={0} list={orders[0].items} />}
-          <div className="param-wrapper-2">
+
+          {activeOrder!=null && <ParamTab type={0} list={activeOrder?.items} />|| <div>Nie ma historii</div>}
+          {/* <div className="param-wrapper-2">
             <h3>Historia ({orders[0].history.length})</h3>
             <ul>
               {orders[0].history.map((i) => {
@@ -96,7 +111,7 @@ export default function Admin() {
                 );
               })}
             </ul>
-          </div>
+          </div> */}
         </div>
         <div className="container-buttons">
           <button className="abort">Zrezygnuj</button>
@@ -104,18 +119,7 @@ export default function Admin() {
         </div>
       </div>
       <div className="flex justify-between w-100 gap-0 m-20">
-        <div className="order-list">
-          <OrderListItem />
-          <OrderListItem />
-          <OrderListItem />
-          <OrderListItem />
-        </div>
-        <div className="order-list">
-          <OrderListItem />
-          <OrderListItem />
-          <OrderListItem />
-          <OrderListItem />
-        </div>
+        {getOrderList()}
       </div>
     </div>
   );
