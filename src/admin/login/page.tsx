@@ -2,24 +2,16 @@ import React, { useState } from "react";
 import styles from "./page.module.css";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router";
+import { getLogin, handleLogout } from "../../Controllers/LoginController";
 
 export default function Login() {
   const [login, setLogin] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [hasError, setHasError] = useState<boolean>(false);
-
-  const getLogin = () => {
-    const token = localStorage.getItem("access_token");
-
-    if (token) {
-      const decoded: any = jwtDecode(token);
-
-      return decoded;
-    }
-  };
-  function handleLogout() {
-    localStorage.removeItem("access_token");
-  }
+  const nav = useNavigate();
+  
+  
   async function handleLogin(e: any) {
     console.log("try");
     e.preventDefault();
@@ -32,6 +24,7 @@ export default function Login() {
       console.log(response.data);
       setHasError(false);
       localStorage.setItem("access_token", response.data);
+      nav("/");
       // navigate('/')
     } catch (error) {
       console.log(error);

@@ -1,24 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import styles from "./page.module.css";
-
-import {
-  addServiceOrder,
-  fetchServiceOrders,
-  takeOrder,
-} from "../data/ordersFetcher";
-import { OrderItem } from "./OrderItem";
 import axios from "axios";
 import { itemTypes, orderStatusTypes, type IOrder } from "./Models/Types";
 import ParamTab from "./OrderTabs/ParamTab";
 import { convertToDate } from "./Utilities/DateConverter";
 import OrderListItem from "./OrderListItem";
+import { useNavigate } from "react-router";
+import { getLogin } from "../Controllers/LoginController";
+import ModalLogin from "./modal.login";
+
 
 export default function Admin() {
   const myId: string = "23";
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeOrder, setActiveOrder] = useState<IOrder|null>(null);
+  const [activeOrder, setActiveOrder] = useState<IOrder | null>(null);
+
+    const [modalOpen, setModalOpen] = useState(false);
+
+  const nav = useNavigate();
 
   const getOrderList = () => {
     if (loading)
@@ -46,11 +46,15 @@ export default function Admin() {
       );
   };
   useEffect(() => {
+    if (localStorage.getItem("access_token") == null) {
+      nav("/login");
+    }
     axios
       .get("http://localhost:5030/api/orders")
       .then((res) => {
         setOrders(res.data);
         console.log(res.data);
+        setActiveOrder(res.data[0]);
         setLoading(false);
       })
       .catch((err) => console.error(err));
@@ -58,6 +62,8 @@ export default function Admin() {
 
   return (
     <div className="main-wrapper">
+     <ModalLogin opened={modalOpen} setOpened={setModalOpen} />
+      
       <div className="left">
         <div>
           <div>
@@ -83,15 +89,19 @@ export default function Admin() {
               </div>
               <div className="param-wrapper-1">
                 <span className="param-name-1">Opłąta</span>
-                {activeOrder!=null && (  <span className="param-1 payment-text-successful">
-                  BLIK powiodła się
-                </span>) || "-"}
-              
+                {(activeOrder != null && (
+                  <span className="param-1 payment-text-successful">
+                    BLIK powiodła się
+                  </span>
+                )) ||
+                  "-"}
               </div>
             </div>
           </div>
 
-          {activeOrder!=null && <ParamTab type={0} list={activeOrder?.items} />|| <div>Nie ma historii</div>}
+          {(activeOrder != null && (
+            <ParamTab type={0} list={activeOrder?.items} />
+          )) || <div>Nie ma historii</div>}
           {/* <div className="param-wrapper-2">
             <h3>Historia ({orders[0].history.length})</h3>
             <ul>
@@ -118,8 +128,15 @@ export default function Admin() {
           <button className="mark">Odznacz jako:</button>
         </div>
       </div>
-      <div className="flex justify-between w-100 gap-0 m-20">
-        {getOrderList()}
+      <div className="right w-full m-10">
+        {" "}
+        <div className="w-full h-20 flex justify-between">
+          <div></div>
+          <div>Login: {getLogin()}<button onClick={()=>setModalOpen(true)}>...</button></div>
+        </div>
+        <div className="flex justify-between w-100 gap-0 m-20">
+          {getOrderList()}
+        </div>
       </div>
     </div>
   );
