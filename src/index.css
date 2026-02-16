@@ -206,3 +206,9 @@ h3 {
   background-color: #8CD260;
   border-left: 1px solid #62a936;
 }
+
+
+.modal-bg{
+  background-color: rgba(0, 0, 0, 0.259);
+  backdrop-filter: blur(10px);
+}
