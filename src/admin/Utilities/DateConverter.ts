@@ -1,4 +1,7 @@
- export const convertToDate = (data: string) => {
+
+  export const convertStringToDate = (data: string|undefined) => {
+    if(data == undefined)
+      return "never";
     const date = new Date(data);
     const today = new Date();
 
@@ -17,3 +20,4 @@
 
     return isToday ? `(Dzisiaj) ${formatted}` : formatted;
   };
+

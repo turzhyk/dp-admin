@@ -1,5 +1,6 @@
 export interface IOrder {
   id: string;
+  orderNumber:number
   desc: string;
   price: number;
   assignedTo: string;

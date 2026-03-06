@@ -42,7 +42,7 @@ export default function AdressForm() {
     } catch (err) {
       console.log(err);
     }
-  };
+  }
   useEffect(() => {
     const getAddresses = async () => {
       try {
@@ -74,10 +74,14 @@ export default function AdressForm() {
       <input onChange={(e) => setCity(e.target.value)} type="text"></input>
       <input onChange={(e) => setStreet(e.target.value)} type="text"></input>
       <button type="submit">SEnd</button>
-
-      <div className="bg-amber-500 p-10"> <ul>{addresses?.map((i)=>{
-           return <li> {i.Country}</li>
-      })}</ul></div>
+      <div className="bg-amber-500 p-10">
+        {" "}
+        <ul>
+          {addresses?.map((i) => {
+            return <li> {i.Country}</li>;
+          })}
+        </ul>
+      </div>
     </form>
   );
 }
