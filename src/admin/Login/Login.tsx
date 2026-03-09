@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./page.module.css";
+import styles from "./Login.module.css";
 import axios, { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router";

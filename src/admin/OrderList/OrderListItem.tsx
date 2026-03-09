@@ -2,6 +2,14 @@ import { convertStringToDate } from "../Utilities/DateConverter";
 import { orderStatusTypes } from "../Models/Types";
 import styles from "./OrderList.module.css";
 
+const statusStyles: Array<string> = [
+  styles.col0,
+  styles.col1,
+  styles.col2,
+  styles.col3,
+  styles.col4,
+  styles.col5,
+];
 export default function OrderListItem({
   id,
   number,
@@ -30,9 +38,7 @@ export default function OrderListItem({
         </div>
         <div className="text-right">{convertStringToDate(createdAt)}</div>
       </div>
-      <div className={styles.itemStatus}>
-        {orderStatusTypes[status]}
-      </div>
+      <div className={styles.itemStatus+" "+statusStyles[status]}>{orderStatusTypes[status]}</div>
     </div>
   );
 }

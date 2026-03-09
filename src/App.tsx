@@ -1,8 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router";
 import Admin from "./admin/Admin";
-import Login from "./admin/login/page";
+
 import Signup from "./admin/signup/page";
-import AdressForm from "./admin/UserRegister/AdressForm";
+import Login from "./admin/Login/Login";
+
 
 function App() {
   return (

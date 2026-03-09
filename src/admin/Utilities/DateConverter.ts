@@ -4,9 +4,13 @@
       return "never";
     const date = new Date(data);
     const today = new Date();
+    const yesterday = today.setDate(date.getDate() - 1);
 
     const isToday =
       date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
+    const isYesterday = date.getDate() === yesterday &&
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear();
 
@@ -17,7 +21,7 @@
       hour: "2-digit",
       minute: "2-digit",
     });
-
-    return isToday ? `(Dzisiaj) ${formatted}` : formatted;
+    const prefix = isToday? "(Dzisiaj)" : isYesterday? "(Wczoraj)":"";
+    return prefix + " " +formatted;
   };
 

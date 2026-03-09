@@ -30,24 +30,22 @@
     display: flex;
     justify-content: space-between;
     border-top: 1px solid rgba(0, 0, 0, 0.128);
+    font-weight: 700;
 }
 
- .itemStatus .col0 {
+ .col0 {
   /*new*/
   background-color: #fec62e;
-   background: repeating-linear-gradient(
+   /* background: repeating-linear-gradient(
     45deg,
     #fec62e,
     #fec62e 20px,
     #edb928 20px,
     #edb928 40px
-  );
+  ); */
 }
 .col1 {
-  background-color: #29adef;
-}
-.col2 {
-  background: repeating-linear-gradient(
+   background: repeating-linear-gradient(
     45deg,
     #24b3df,
     #24b3df 20px,
@@ -55,20 +53,30 @@
     #25a3e3 40px
   );
 }
+.col2 {background-color: #29adef;
+ 
+}
 .col3 {
   background-color: #18b110;
+   background: repeating-linear-gradient(
+    45deg,
+    #18b110,
+    #18b110 20px,
+    #19a812 20px,
+    #19a812 40px
+  );
 }
-.col4 {
-  background: repeating-linear-gradient(
+.col4 {background-color: #9f31db;
+ 
+  color: white;
+}
+.col5 {
+   background: repeating-linear-gradient(
     45deg,
     #9f31db,
     #9f31db 20px,
     #aa4ff0 20px,
     #aa4ff0 40px
   );
-  color: white;
-}
-.col5 {
-  background-color: #9f31db;
   color: white;
 }
