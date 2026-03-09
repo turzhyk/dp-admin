@@ -1,0 +1,74 @@
+.orderList {
+  margin: 1rem;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.5rem;
+  width: 80%;
+  min-width: 20rem;
+}
+
+.item {
+  height: 5rem;
+  background-color: aliceblue;
+  border-radius: 2px;
+  border: 1px solid #0000002c;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+}
+.itemStatus {
+    width: 100%;
+    height: 2rem;
+    padding: 0.5rem;
+    background-color: rgba(0, 0, 0, 0.131);
+    line-height: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid rgba(0, 0, 0, 0.128);
+}
+
+ .itemStatus .col0 {
+  /*new*/
+  background-color: #fec62e;
+   background: repeating-linear-gradient(
+    45deg,
+    #fec62e,
+    #fec62e 20px,
+    #edb928 20px,
+    #edb928 40px
+  );
+}
+.col1 {
+  background-color: #29adef;
+}
+.col2 {
+  background: repeating-linear-gradient(
+    45deg,
+    #24b3df,
+    #24b3df 20px,
+    #25a3e3 20px,
+    #25a3e3 40px
+  );
+}
+.col3 {
+  background-color: #18b110;
+}
+.col4 {
+  background: repeating-linear-gradient(
+    45deg,
+    #9f31db,
+    #9f31db 20px,
+    #aa4ff0 20px,
+    #aa4ff0 40px
+  );
+  color: white;
+}
+.col5 {
+  background-color: #9f31db;
+  color: white;
+}

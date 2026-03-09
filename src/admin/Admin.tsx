@@ -3,66 +3,64 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { itemTypes, orderStatusTypes, type IOrder } from "./Models/Types";
 import ParamTab from "./OrderTabs/ParamTab";
-import OrderListItem from "./OrderListItem";
+import OrderListItem from "./OrderList/OrderListItem";
 import { useNavigate } from "react-router";
 import { getLogin } from "../Controllers/LoginController";
 import ModalLogin from "./modal.login";
 import { convertStringToDate } from "./Utilities/DateConverter";
+import ItemsTab from "./OrderTabs/ItemsTab";
+import HistoryTab from "./OrderTabs/HistoryTab";
+import OrderList from "./OrderList/OrderList";
 
 export default function Admin() {
-  const myId: string = "23";
-  const [orders, setOrders] = useState<IOrder[]>([]);
-  const [loading, setLoading] = useState(true);
   const [activeOrderIndex, setActiveOrderIndex] = useState<number>(0);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [markPanelShown, setMarkPanelShown] = useState<boolean>(false);
 
+ const [orders, setOrders] = useState<IOrder[]>([]);
+  const [loading, setLoading] = useState(true);
   const nav = useNavigate();
-
-  const getOrderList = () => {
-    if (loading)
-      return (
-        <div className="w-60 h-40 border-2 text-center">
-          System się urochamia...
-        </div>
-      );
-    else
-      return (
-        <>
-          <div className="order-list">
-            {orders.map((i, index) => {
-              return (
-                <OrderListItem
-                  id={i.id}
-                  index={index}
-                  number={i.orderNumber}
-                  createdAt={i.createdAt}
-                  onClick={() => setActiveOrderIndex(index)}
-                  status={i.status.toString()}
-                  isSelected={activeOrderIndex==index}
-                />
-              );
-            })}
-          </div>
-        </>
-      );
-  };
-  const setActiveOrderStatus = (status: string) => {};
   useEffect(() => {
-    if (localStorage.getItem("access_token") == null) {
+    const token = localStorage.getItem("access_token");
+    if (token == null) {
       nav("/login");
     }
     axios
-      .get("http://localhost:5030/api/orders/get")
+      .get("http://localhost:5030/api/orders/get", {
+        headers: {
+          Authorization: "bearer " + token,
+        },
+      })
       .then((res) => {
         setOrders(res.data);
-        console.log(res.data);
+        // console.log(res.data);
         setActiveOrderIndex(0);
         setLoading(false);
       })
-      .catch((err) => console.error(err));
+      .catch((err: any) => console.error(err.status));
   }, []);
+  
+  const setActiveOrderStatus = (status: number) => {
+    orders[activeOrderIndex].status = status;
+    const url =
+      "http://localhost:5030/api/orders/" +
+      orders[activeOrderIndex].id +
+      "/setStatus";
+    const token = localStorage.getItem("access_token");
+    axios.post(
+      url,
+      {
+        status: status,
+      },
+      {
+        headers: {
+          Authorization: "bearer " + token,
+        },
+      },
+    );
+  };
+  
 
   return (
     <div className="main-wrapper">
@@ -105,7 +103,10 @@ export default function Admin() {
           </div>
 
           {(orders[activeOrderIndex] != null && (
-            <ParamTab type={0} list={orders[activeOrderIndex]?.items} />
+            <ItemsTab title="Artykuły" list={orders[activeOrderIndex]?.items} />
+          )) || <div>Nie ma historii</div>}
+            {(orders[activeOrderIndex] != null && (
+            <HistoryTab title="Historia" list={orders[activeOrderIndex]?.history} />
           )) || <div>Nie ma historii</div>}
           {/* <div className="param-wrapper-2">
             <h3>Historia ({orders[0].history.length})</h3>
@@ -130,32 +131,25 @@ export default function Admin() {
         </div>
         <div className="container-buttons">
           <button className="abort">Zrezygnuj</button>
-          <button
+          <div
             className="mark"
             onClick={() => setMarkPanelShown(!markPanelShown)}
           >
             Odznacz jako:
             <div className={"mark-panel " + (markPanelShown ? "" : " hidden")}>
-              <button onClick={() => setActiveOrderStatus("InfoNeeded")}>
-                Info Needed
-              </button>
-              <button onClick={() => setActiveOrderStatus("InProgress")}>
+              <button onClick={() => setActiveOrderStatus(1)}>
                 In Progress
               </button>
-              <button onClick={() => setActiveOrderStatus("Produced")}>
-                Produced
-              </button>
-              <button onClick={() => setActiveOrderStatus("Packing")}>
-                Packing
-              </button>
-              <button onClick={() => setActiveOrderStatus("ReadyForShipping")}>
+              <button onClick={() => setActiveOrderStatus(2)}>Produced</button>
+              <button onClick={() => setActiveOrderStatus(3)}>Packing</button>
+              <button onClick={() => setActiveOrderStatus(4)}>
                 Ready For Shipping
               </button>
-              <button onClick={() => setActiveOrderStatus("InDelivery")}>
+              <button onClick={() => setActiveOrderStatus(5)}>
                 In Delivery
               </button>
             </div>
-          </button>
+          </div>
         </div>
       </div>
       <div className="right w-full m-10">
@@ -167,9 +161,7 @@ export default function Admin() {
             <button onClick={() => setModalOpen(true)}>...</button>
           </div>
         </div>
-       
-          {getOrderList()}
-        
+        <OrderList orders={orders} isLoading={loading} selectOrder={setActiveOrderIndex} selectedOrderIndex={activeOrderIndex}/>
       </div>
     </div>
   );

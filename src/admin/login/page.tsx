@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./page.module.css";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router";
 import { getLogin, handleLogout } from "../../Controllers/LoginController";
@@ -26,8 +26,9 @@ export default function Login() {
       localStorage.setItem("access_token", response.data);
       nav("/");
       // navigate('/')
-    } catch (error) {
-      console.log(error);
+    } catch (error:any) {
+      
+      // console.log(error.status);
       setHasError(true);
     }
   }
