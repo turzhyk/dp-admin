@@ -18,7 +18,11 @@ export default function Admin() {
   const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const nav = useNavigate();
-
+  const handleBgCLick = () => {
+    if (activeOrderIndex != -1) {
+      setActiveOrderIndex(-1);
+    }
+  };
   const handleOrderStatusChange = (orderIndex: number, status: number) => {
     setOrders((prev) =>
       prev.map((item, index) =>
@@ -48,16 +52,15 @@ export default function Admin() {
   }, []);
 
   return (
-    <div className="main-wrapper">
+    <div className="main-wrapper" >
       <ModalLogin opened={modalOpen} setOpened={setModalOpen} />
-      {orders != null && (
-        <OrderEditPanel
-          activeOrder={orders[activeOrderIndex]}
-          onStatusChange={(status) =>
-            handleOrderStatusChange(activeOrderIndex, status)
-          }
-        />
-      )}
+
+      <OrderEditPanel
+        activeOrder={orders[activeOrderIndex]}
+        onStatusChange={(status) =>
+          handleOrderStatusChange(activeOrderIndex, status)
+        }
+      />
 
       <div className="right w-full m-10">
         {" "}

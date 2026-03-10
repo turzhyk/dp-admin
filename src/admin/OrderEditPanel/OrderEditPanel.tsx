@@ -31,7 +31,10 @@ export default function OrderEditPanel({
       },
     );
   };
-
+  if(activeOrder==null)
+  {
+    return <div className={styles.orderPanel}> <h1 className={styles.title}>Wybierz zamówienie</h1></div>
+  }
  return (
   <div className={styles.orderPanel}>
     <div>
