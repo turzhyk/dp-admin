@@ -3,6 +3,7 @@ import Admin from "./admin/Admin";
 
 import Signup from "./admin/signup/page";
 import Login from "./admin/Login/Login";
+import Home from "./Home";
 
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
       <div className="mFin-h-screen flex justify-center">
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Admin/>}/>
+      <Route path="/" element={<Home/>}/>
      
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
