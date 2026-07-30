@@ -18,7 +18,7 @@ export default function Login() {
     try {
       const requestBody = { login, password };
       const response = await axios.post(
-        "http://localhost:5030/api/users/login",
+        "https://api.turzan.pl/api/users/login",
         requestBody,
       );
       console.log(response.data);

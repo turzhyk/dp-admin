@@ -36,10 +36,11 @@ export default function Admin() {
     if (token == null) {
       nav("/login");
     }
+    console.log(token);
     axios
-      .get("http://localhost:5030/api/orders/get", {
+      .get(" https://api.turzan.pl/api/orders", {
         headers: {
-          Authorization: "bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
@@ -48,11 +49,14 @@ export default function Admin() {
         setActiveOrderIndex(0);
         setLoading(false);
       })
-      .catch((err: any) => console.error(err.status));
+      .catch((err) => {
+        console.log(err.response?.status);
+        console.log(err.response?.data);
+      });
   }, []);
 
   return (
-    <div className="main-wrapper" >
+    <div className="main-wrapper">
       <ModalLogin opened={modalOpen} setOpened={setModalOpen} />
 
       <OrderEditPanel

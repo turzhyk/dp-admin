@@ -11,7 +11,7 @@ function App() {
       <div className="mFin-h-screen flex justify-center">
     <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Home/>}/>
+      <Route path="/" element={<Admin/>}/>
      
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
