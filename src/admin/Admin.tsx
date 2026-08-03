@@ -9,6 +9,7 @@ import { getLogin } from "../Controllers/LoginController";
 import OrderList from "./OrderList/OrderList";
 import OrderEditPanel from "./OrderEditPanel/OrderEditPanel";
 import ModalLogin from "./Login/Login.Modal";
+import OrderCreate from "../OrderCreate/OrderCreate";
 
 export default function Admin() {
   const [activeOrderIndex, setActiveOrderIndex] = useState<number>(0);
@@ -50,6 +51,8 @@ export default function Admin() {
         setLoading(false);
       })
       .catch((err) => {
+        if(err.response?.status == 401)
+          nav("/login");
         console.log(err.response?.status);
         console.log(err.response?.data);
       });
@@ -65,7 +68,7 @@ export default function Admin() {
           handleOrderStatusChange(activeOrderIndex, status)
         }
       />
-
+      <OrderCreate/>
       <div className="right w-full m-10">
         {" "}
         <div className="w-full h-20 flex justify-between">
